@@ -48,62 +48,59 @@ object HotcellUtils {
     }
 
     // YOU NEED TO CHANGE THIS PART
-    /**
-     * Function to calculate the adjacent hot cells for a given cell
-     * @param minX - min value of X
-     * @param minY - min value of Y
-     * @param minZ - min value of Z
-     * @param maxX - max value of X
-     * @param maxY - max value of Y
-     * @param maxZ - max value of Z
-     * @param X - x coordinate of a given point
-     * @param Y - y coordinate of a given point
-     * @param Z - z coordinate of a given point
-     * @return 18 - if point lies on x-boundary
-     *         12 - if point lies on x and y boundary
-     *         8 - if point lies on x, y, and z boundary
-     *         27 - otherwise
-     */
-    def computeAdjacentHotcell( minX: Int, minY: Int, minZ: Int, maxX: Int, maxY: Int, maxZ: Int, X: Int, Y: Int, Z: Int): Int = {
-        var count = 0
+    /*Returns aggregate weight of each cell i wrt its adjacent cells j
+      min_x - min value of X
+      min_y - min value of Y
+      min_z - min value of Z
+      max_x - max value of X
+      max_y - max value of Y
+      max_z - max value of Z
+      x - x coordinate
+      y - y coordinate
+      z - z coordinate */
+    def computeAdjWeight( min_x: Int, min_y: Int, min_z: Int, max_x: Int, max_y: Int, max_z: Int, x: Int, y: Int, x: Int): Int = {
+        var weight = 0
 
-        // Cell is on X-boundary
-        if (X == minX || X == maxX) {
-            count += 1
+        // if cell is on X-boundary
+        if (x == min_x || y == max_x) {
+            weight = 1
         }
-        // Cell is on X-boundary and Y-boundary
-        if (Y == minY || Y == maxY) {
-            count += 1
+        // if cell is on X-boundary and Y-boundary
+        if (y == min_y || y == max_y) {
+            weight = 2
         }
-        // Cell is on X-boundary, Y-boundary, and Z-boundary
-        if (Z == minZ || Z == maxZ) {
-            count += 1
+        // if cell is on X-boundary, Y-boundary, and Z-boundary
+        if (z == min_z || z == max_z) {
+            weight = 3
         }
 
-        count match {
-            case 1 => 18
-            case 2 => 12
-            case 3 => 8
-            case _ => 27
+        if(weight == 1){
+            return 18
+        }
+        else if(weight == 2){
+            return 12
+        }
+        else if(weight == 3){
+            return 8
+        }
+        else{
+            return 27
         }
     }
 
-    /**
-     * Function to calculate the Getis-ord (G) score for a given point
-     * @param numCells - total number of cells
-     * @param x - x coordinate
-     * @param y - y coordinate
-     * @param z - z coordinate
-     * @param adjacentHotcell - adjacent hotcells calculated by the user-defined calculateAdjacentHotcell() function
-     * @param number - Hotcell number for given x and y coordinate
-     * @param avg - average of the hotcell for all the points
-     * @param std - standard deviation
-     * @return - G score
-     */
-    def GScore(numCells: Int, x: Int, y: Int, z: Int, adjacentHotcell: Int, cellNumber: Int , avg: Double, stdDev: Double): Double = {
-        var adjHotCell: Double = adjacentHotcell.toDouble
-        var numOfCells: Double = numCells.toDouble
-        (cellNumber.toDouble - (avg * adjHotCell)) / (stdDev * math.sqrt((( adjHotCell * numOfCells) - (adjHotCell * adjHotCell)) / (numOfCells - 1.0)))
+    /*Returns Getis-Ord score
+      num_cells - total number of cells in the cube
+      x - x coordinate
+      y - y coordinate
+      z - z coordinate
+      agg_weight - aggregate weight of adjacent hotcells
+      cell_number - Hotcell number for given x and y coordinate
+      mean - mean number of points per cell
+      std_dev - standard deviation */
+    def GScore(num_cells: Int, x: Int, y: Int, z: Int, agg_weight: Int, cell_number: Int , mean: Double, std_dev: Double): Double = {
+        var num_of_cells: Double = num_cells.toDouble
+        var w: Double = agg_weight.toDouble
+        var h: Double = cell_number.toDouble
+        (h - (mean * w)) / (std_dev * math.sqrt((( w * num_of_cells) - (w * w)) / (num_of_cells - 1.0)))
     }
-
 }

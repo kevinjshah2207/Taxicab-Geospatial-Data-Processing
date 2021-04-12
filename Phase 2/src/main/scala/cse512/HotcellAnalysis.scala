@@ -63,7 +63,7 @@ object HotcellAnalysis {
         + "ORDER BY h1.z, h1.y, h1.x" )
 
         // User defined function to calculate cellNumber of adjacent cells
-        var calculateNumberAdjFunc = udf((minX: Int, minY: Int, minZ: Int, maxX: Int, maxY: Int, maxZ: Int, X: Int, Y: Int, Z: Int) => HotcellUtils.computeAdjacentHotcell(minX, minY, minZ, maxX, maxY, maxZ, X, Y, Z))
+        var calculateNumberAdjFunc = udf((minX: Int, minY: Int, minZ: Int, maxX: Int, maxY: Int, maxZ: Int, X: Int, Y: Int, Z: Int) => HotcellUtils.computeAdjWeight(minX, minY, minZ, maxX, maxY, maxZ, X, Y, Z))
         var adjacentHotcell = adHotCellNumber.withColumn("adjacentHotcell", calculateNumberAdjFunc(lit(minX), lit(minY), lit(minZ), lit(maxX), lit(maxY), lit(maxZ), col("x"), col("y"), col("z")))
 
         // User defined function to calculate G (Getis-Ord) based on the calculated information
