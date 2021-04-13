@@ -62,7 +62,7 @@ object HotcellUtils {
         var weight = 0
 
         // if cell is on X-boundary
-        if (x == min_x || y == max_x) {
+        if (x == min_x || x == max_x) {
             weight = 1
         }
         // if cell is on X-boundary and Y-boundary
