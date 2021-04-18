@@ -58,20 +58,20 @@ object HotcellUtils {
       x - x coordinate
       y - y coordinate
       z - z coordinate */
-    def computeAdjWeight( min_x: Int, min_y: Int, min_z: Int, max_x: Int, max_y: Int, max_z: Int, x: Int, y: Int, x: Int): Int = {
+    def computeAdjWeight( min_x: Int, min_y: Int, min_z: Int, max_x: Int, max_y: Int, max_z: Int, x: Int, y: Int, z: Int): Int = {
         var weight = 0
 
         // if cell is on X-boundary
         if (x == min_x || x == max_x) {
-            weight = 1
+            weight += 1
         }
         // if cell is on X-boundary and Y-boundary
         if (y == min_y || y == max_y) {
-            weight = 2
+            weight += 1
         }
         // if cell is on X-boundary, Y-boundary, and Z-boundary
         if (z == min_z || z == max_z) {
-            weight = 3
+            weight += 1
         }
 
         if(weight == 1){
