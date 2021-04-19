@@ -34,10 +34,10 @@ object HotzoneAnalysis {
          * Group By the rectangle values and count the number of points
          * inside the corresponding rectangle using "coalesce" function.
          */
-        val countDataframe = joinDf.groupBy("rectangle").count()
-        val outputDataframe = countDataframe.sort("rectangle").coalesce(1)
+        val countPoints = joinDf.groupBy("rectangle").count()
+        val outputcoalesce_data = countPoints.sort("rectangle").coalesce(1)
 
-        outputDataframe
+        outputcoalesce_data
     }
 
 }
